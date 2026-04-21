@@ -11,7 +11,6 @@ export default function Cliente() {
   const [barberos, setBarberos] = useState([]);
   const [turnos, setTurnos] = useState([]);
 
-  // 💈 SERVICIOS
   const [servicios, setServicios] = useState([]);
   const [servicio, setServicio] = useState("");
   const [precio, setPrecio] = useState(0);
@@ -96,7 +95,7 @@ export default function Cliente() {
 
       <h3>Agendar Turno</h3>
 
-      {/* 📅 CALENDARIO PRO 12H */}
+      {/* 📅 CALENDARIO PRO */}
       <div className="field-group">
         <DatePicker
           selected={fechaHora}
@@ -124,7 +123,9 @@ export default function Cliente() {
       {/* 💈 SERVICIOS */}
       <select
         onChange={(e) => {
-          const s = servicios.find((x) => x.id == e.target.value);
+          const s = servicios.find(
+            (x) => x.id === parseInt(e.target.value) // 🔥 FIX AQUÍ
+          );
           if (s) {
             setServicio(s.nombre);
             setPrecio(s.precio);
