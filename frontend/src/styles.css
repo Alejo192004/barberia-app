@@ -1,0 +1,523 @@
+/* ============================================================
+   THE BARBER — Premium Grooming · styles.css
+   Fuentes requeridas (agregar en tu <head>):
+   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+   ============================================================ */
+
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── VARIABLES ── */
+:root {
+  --gold:        #d4a843;
+  --gold-dark:   #b88c28;
+  --gold-light:  #e8c060;
+  --bg-deep:     #0a0a0a;
+  --bg-card:     rgba(14, 12, 10, 0.85);
+  --bg-input:    rgba(255, 255, 255, 0.04);
+  --text-main:   #f0ede6;
+  --text-muted:  rgba(240, 237, 230, 0.55);
+  --border-gold: rgba(184, 140, 40, 0.2);
+  --radius:      3px;
+  --transition:  0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── FONDO GLOBAL ── */
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Imagen de fondo + overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(184,140,40,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(184,140,40,0.05) 0%, transparent 50%),
+    url("https://images.unsplash.com/photo-1585747860715-2ba37e788b70") center/cover no-repeat fixed;
+  z-index: -2;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5,5,5,0.88) 0%, rgba(10,10,10,0.93) 100%);
+  z-index: -1;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar        { width: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: rgba(184,140,40,0.3); border-radius: 2px; }
+
+/* ── CONTENEDOR ── */
+.container {
+  max-width: 520px;
+  margin: 60px auto;
+  padding: 48px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Línea dorada superior */
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), var(--gold), var(--gold-dark), transparent);
+}
+
+/* ── TIPOGRAFÍA ── */
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--text-main);
+  letter-spacing: 2px;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.1;
+}
+
+h1 span {
+  display: block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 8px;
+}
+
+h2 { font-size: 22px; font-weight: 700; }
+h3 { font-size: 16px; font-weight: 400; }
+
+/* Texto dorado con shimmer */
+.golden-text {
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Ornamento / subtítulo de sección */
+.ornament {
+  text-align: center;
+  color: var(--gold-dark);
+  font-size: 10px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  opacity: 0.7;
+}
+
+/* ── SEPARADOR ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: var(--gold-dark);
+  font-size: 13px;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+}
+.divider::before {
+  background: linear-gradient(90deg, transparent, rgba(184,140,40,0.4));
+}
+.divider::after {
+  background: linear-gradient(270deg, transparent, rgba(184,140,40,0.4));
+}
+
+/* ── GRUPOS DE CAMPOS (label flotante) ── */
+.field-group {
+  position: relative;
+  margin: 18px 0;
+}
+
+.field-group label {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(184,140,40,0.55);
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+/* Label sube cuando el campo tiene foco o valor */
+.field-group input:focus + label,
+.field-group input:not(:placeholder-shown) + label,
+.field-group select:focus + label {
+  top: -9px;
+  left: 12px;
+  font-size: 9px;
+  background: #0e0c0a;
+  padding: 0 6px;
+  color: var(--gold);
+}
+
+/* ── INPUTS & SELECT ── */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  color: var(--text-main);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input::placeholder { color: transparent; }
+
+input:focus,
+select:focus,
+textarea:focus {
+  background: rgba(184,140,40,0.06);
+  border-color: var(--gold-dark);
+  box-shadow:
+    0 0 0 3px rgba(184,140,40,0.08),
+    inset 0 0 20px rgba(184,140,40,0.03);
+}
+
+/* Flecha personalizada para select */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b88c28' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 42px;
+  cursor: pointer;
+}
+select option { background: #0e0c0a; color: var(--text-main); }
+
+/* ── BOTÓN PRINCIPAL ── */
+button,
+.btn-primary {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  border: none;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #c49a2a 0%, var(--gold) 40%, var(--gold-light) 60%, #c49a2a 100%);
+  background-size: 200% 100%;
+  color: #0a0a0a;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto de brillo al pasar el cursor */
+button::before,
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+button:hover,
+.btn-primary:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  letter-spacing: 5px;
+  box-shadow:
+    0 8px 32px rgba(184,140,40,0.35),
+    0 0 0 1px rgba(184,140,40,0.3);
+}
+
+button:hover::before,
+.btn-primary:hover::before { left: 100%; }
+
+button:active,
+.btn-primary:active { transform: translateY(0); }
+
+/* ── BOTÓN SECUNDARIO ── */
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(184,140,40,0.35);
+  color: var(--gold-dark);
+  margin-top: 10px;
+}
+.btn-secondary:hover {
+  background: rgba(184,140,40,0.08);
+  border-color: var(--gold-dark);
+  color: var(--gold);
+  letter-spacing: 5px;
+  box-shadow: none;
+}
+
+/* ── TARJETAS ── */
+.card {
+  background: rgba(18,15,12,0.9);
+  border: 1px solid rgba(184,140,40,0.1);
+  border-left: 3px solid var(--gold-dark);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all var(--transition);
+  animation: slideIn 0.5s ease both;
+  cursor: pointer;
+}
+
+.card:hover {
+  background: rgba(184,140,40,0.06);
+  border-left-color: var(--gold);
+  transform: translateX(5px);
+  box-shadow: -4px 0 24px rgba(184,140,40,0.15);
+}
+
+/* Ícono dentro de la tarjeta */
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 2px;
+  background: rgba(184,140,40,0.1);
+  border: 1px solid rgba(184,140,40,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+.card:hover .card-icon {
+  background: rgba(184,140,40,0.2);
+  transform: scale(1.08);
+}
+
+.card-body { flex: 1; }
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.card-sub {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(184,140,40,0.55);
+}
+
+.card-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+/* ── BADGE ── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(184,140,40,0.12);
+  border: 1px solid rgba(184,140,40,0.28);
+  border-radius: 2px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* ── ANIMACIONES ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1;   }
+  50%       { opacity: 0.5; }
+}
+
+/* Delay escalonado para tarjetas */
+.card:nth-child(1) { animation-delay: 0s;   }
+.card:nth-child(2) { animation-delay: 0.08s; }
+.card:nth-child(3) { animation-delay: 0.16s; }
+.card:nth-child(4) { animation-delay: 0.24s; }
+.card:nth-child(5) { animation-delay: 0.32s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .container {
+    margin: 20px 16px;
+    padding: 32px 24px;
+  }
+  h1 { font-size: 28px; }
+}
+
+/* ============================================================
+   🧑‍💼 ADMIN PANEL (INTEGRADO AL ESTILO PREMIUM)
+   ============================================================ */
+
+.admin-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+/* 🔹 SECCIONES */
+.section {
+  margin-top: 40px;
+}
+
+.section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* línea elegante */
+.section h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 2px;
+  margin-top: 8px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+}
+
+/* 👥 USUARIOS */
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(18,15,12,0.85);
+  border: 1px solid rgba(184,140,40,0.1);
+  border-left: 3px solid var(--gold-dark);
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  transition: all var(--transition);
+}
+
+.user-item:hover {
+  background: rgba(184,140,40,0.06);
+  border-left-color: var(--gold);
+  transform: translateX(4px);
+}
+
+/* 📅 TURNOS */
+.turno-item {
+  background: rgba(18,15,12,0.85);
+  border: 1px solid rgba(184,140,40,0.1);
+  border-left: 3px solid var(--gold-dark);
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all var(--transition);
+}
+
+.turno-item:hover {
+  background: rgba(184,140,40,0.06);
+  border-left-color: var(--gold);
+  transform: translateX(4px);
+}
+
+/* ❌ BOTÓN ELIMINAR */
+.btn-delete {
+  background: transparent;
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  color: #ff4d4d;
+  padding: 6px 10px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+  background: rgba(255, 0, 0, 0.1);
+  border-color: red;
+  color: red;
+  transform: scale(1.05);
+}
+
+.custom-datepicker {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(184,140,40,0.2);
+  color: #f0ede6;
+  border-radius: 3px;
+}
+
+.react-datepicker {
+  background-color: #0e0c0a;
+  border: 1px solid rgba(184,140,40,0.3);
+}
+
+.react-datepicker__header {
+  background-color: #0a0a0a;
+}
+
+.react-datepicker__day--selected {
+  background-color: #d4a843;
+  color: #000;
+}
